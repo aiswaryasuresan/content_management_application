@@ -1,5 +1,5 @@
-import 'package:content_management_app/ui/auth/add_content_section.dart';
-import 'package:content_management_app/ui/auth/display_content_section.dart';
+import 'package:content_management_app/ui/add_content_section.dart';
+import 'package:content_management_app/ui/display_content_section.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboardScreen extends StatefulWidget {

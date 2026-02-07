@@ -38,6 +38,7 @@ dependencies:
   cloud_firestore: ^6.1.2
   firebase_core: ^4.4.0
   fluttertoast: ^9.0.0
+  random_string: ^2.3.1
 
 
 dev_dependencies:

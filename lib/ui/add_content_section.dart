@@ -1,4 +1,7 @@
+import 'package:content_management_app/auth_service/database.dart';
+import 'package:content_management_app/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
 class AddContentSection extends StatefulWidget {
   const AddContentSection({super.key});
@@ -8,10 +11,9 @@ class AddContentSection extends StatefulWidget {
 }
 
 class _AddContentSectionState extends State<AddContentSection> {
-
   TextEditingController titleController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController authorController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController imageUrlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class _AddContentSectionState extends State<AddContentSection> {
             ),
             child: TextField(
               decoration: InputDecoration(border: InputBorder.none),
-              controller: priceController,
+              controller: descriptionController,
             ),
           ),
           SizedBox(height: 15),
@@ -85,7 +87,7 @@ class _AddContentSectionState extends State<AddContentSection> {
             ),
             child: TextField(
               decoration: InputDecoration(border: InputBorder.none),
-              controller: authorController,
+              controller: imageUrlController,
             ),
           ),
           SizedBox(height: 20),
@@ -99,7 +101,22 @@ class _AddContentSectionState extends State<AddContentSection> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                String id = randomAlphaNumeric(10);
+                Map<String, dynamic> data = {
+                  "id": id,
+                  "title": titleController.text,
+                  "description": descriptionController.text,
+                  "image_url": imageUrlController.text,
+                };
+                DatabaseHelper().addContent(data, id).then((value) {
+                  Message.showToast(message: 'Content has been added');
+                });
+                titleController.clear();
+                descriptionController.clear();
+                imageUrlController.clear();
+                FocusScope.of(context).unfocus();
+              },
               child: Text(
                 'Add Content',
                 style: TextStyle(
