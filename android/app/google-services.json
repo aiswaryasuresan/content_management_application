@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "622439677828",
+    "project_id": "content-management-app-e3085",
+    "storage_bucket": "content-management-app-e3085.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622439677828:android:fca40271d0e2bcabffa7d1",
+        "android_client_info": {
+          "package_name": "com.example.content_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcH2oo-q1ifqmR8QwsDgXZ3tm5hLcuLE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
