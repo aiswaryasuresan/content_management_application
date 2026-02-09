@@ -14,6 +14,21 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   DocumentSnapshot<Object?>? documentSnapshot;
 
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
+    );
+  }
+
+  late ScrollController _scrollController;
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,10 +48,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     title: Text('Log out'),
                     content: Text('Are you sure you want to log out?'),
                     actions: [
-                      TextButton( 
+                      TextButton(
                         onPressed: () async {
                           await AuthService.logOut();
-                          Navigator.pushReplacementNamed(context, "/login");
+                          Navigator.pushNamedAndRemoveUntil(context, "/login",  (route) => false);
                         },
                         child: Text("YES"),
                       ),
@@ -56,6 +71,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             AddContentSection(
@@ -71,6 +87,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 setState(() {
                   documentSnapshot = v;
                 });
+                _scrollToTop();
               },
             ),
           ],

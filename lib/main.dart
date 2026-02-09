@@ -7,12 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,10 +26,10 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => CheckUserLoggedIn(),
-        "/login" : (context) => LoginScreen(),
-        "/signup" : (context) => SignUpScreen(),
-        "/admindashboard" : (context) => AdminDashboardScreen(),
-        "/userdashboard" : (context) => UserDashboardScreen(),
+        "/login": (context) => LoginScreen(),
+        "/signup": (context) => SignUpScreen(),
+        "/admindashboard": (context) => AdminDashboardScreen(),
+        "/userdashboard": (context) => UserDashboardScreen(),
       },
     );
   }
@@ -48,15 +46,14 @@ class _CheckUserLoggedInState extends State<CheckUserLoggedIn> {
   @override
   void initState() {
     super.initState();
+    print("Is user logged : ${AuthService.isUserLoggedIn()}");
 
     Future.microtask(() {
       if (AuthService.isUserLoggedIn()) {
         if (AuthService.isAdmin()) {
-          Navigator.pushReplacementNamed(
-              context, "/admindashboard");
+          Navigator.pushReplacementNamed(context, "/admindashboard");
         } else {
-          Navigator.pushReplacementNamed(
-              context, "/userdashboard");
+          Navigator.pushReplacementNamed(context, "/userdashboard");
         }
       } else {
         Navigator.pushReplacementNamed(context, "/login");
@@ -66,9 +63,6 @@ class _CheckUserLoggedInState extends State<CheckUserLoggedIn> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
-    );
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
-

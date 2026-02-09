@@ -36,7 +36,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                       TextButton(
                         onPressed: () async {
                           await AuthService.logOut();
-                          Navigator.pushReplacementNamed(context, "/login");
+                          Navigator.pushNamedAndRemoveUntil(context, "/login",  (route) => false);
                         },
                         child: Text("YES"),
                       ),

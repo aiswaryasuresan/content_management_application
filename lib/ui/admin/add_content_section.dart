@@ -24,7 +24,7 @@ class AddContentSection extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.all(30),
+      margin: EdgeInsets.only(left: 25,right: 25,top: 10,bottom: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
