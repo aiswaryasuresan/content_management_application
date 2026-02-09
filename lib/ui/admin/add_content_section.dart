@@ -1,22 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:content_management_app/auth_service/database.dart';
 import 'package:content_management_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
-class AddContentSection extends StatefulWidget {
-  const AddContentSection({super.key});
+class AddContentSection extends StatelessWidget {
+  final DocumentSnapshot<Object?>? documentSnapshot;
+  final VoidCallback onSubmit;
+  AddContentSection({super.key, this.documentSnapshot, required this.onSubmit});
 
-  @override
-  State<AddContentSection> createState() => _AddContentSectionState();
-}
-
-class _AddContentSectionState extends State<AddContentSection> {
   TextEditingController titleController = TextEditingController();
+
   TextEditingController descriptionController = TextEditingController();
+
   TextEditingController imageUrlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    if (documentSnapshot != null) {
+      titleController.text = documentSnapshot!["title"];
+      descriptionController.text = documentSnapshot!["description"];
+      imageUrlController.text = documentSnapshot!["image_url"];
+    }
+
     return Container(
       margin: EdgeInsets.all(30),
       child: Column(
@@ -43,6 +49,7 @@ class _AddContentSectionState extends State<AddContentSection> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
+              autofocus: false,
               decoration: InputDecoration(border: InputBorder.none),
               controller: titleController,
             ),
@@ -65,6 +72,7 @@ class _AddContentSectionState extends State<AddContentSection> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
+              autofocus: false,
               decoration: InputDecoration(border: InputBorder.none),
               controller: descriptionController,
             ),
@@ -86,6 +94,7 @@ class _AddContentSectionState extends State<AddContentSection> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
+              autofocus: false,
               decoration: InputDecoration(border: InputBorder.none),
               controller: imageUrlController,
             ),
@@ -101,24 +110,34 @@ class _AddContentSectionState extends State<AddContentSection> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+
               onPressed: () {
-                String id = randomAlphaNumeric(10);
                 Map<String, dynamic> data = {
-                  "id": id,
                   "title": titleController.text,
                   "description": descriptionController.text,
                   "image_url": imageUrlController.text,
                 };
-                DatabaseHelper().addContent(data, id).then((value) {
-                  Message.showToast(message: 'Content has been added');
-                });
+                if (documentSnapshot == null) {
+                  String id = randomAlphaNumeric(10);
+                  data['id'] = id;
+                  DatabaseHelper().addContent(data, id).then((value) {
+                    Message.showToast(message: 'Content has been added');
+                  });
+                } else {
+                  String id = documentSnapshot!.id;
+                  data['id'] = id;
+                  DatabaseHelper().updateContent(data, id).then((value) {
+                    Message.showToast(message: 'Content has been updated');
+                  });
+                }
                 titleController.clear();
                 descriptionController.clear();
                 imageUrlController.clear();
                 FocusScope.of(context).unfocus();
+                onSubmit.call();
               },
               child: Text(
-                'Add Content',
+                documentSnapshot == null ? 'Add Content' : 'Update',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

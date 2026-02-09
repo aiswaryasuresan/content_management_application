@@ -14,6 +14,11 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -64,20 +69,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () async {
-                    AuthService.loginWithEmail(
+                    final result = await AuthService.loginWithEmail(
                       emailController.text,
                       passwordController.text,
-                    ).then((value) {
-                      if (value == "Login Successful") {
-                        Message.showToast(message: "Successfully Logged");
+                    );
+                    if (result == "Login Successful") {
+                      Message.showToast(message: "Successfully Logged");
+                      if (AuthService.isAdmin()) {
                         Navigator.pushReplacementNamed(
                           context,
-                          "/admindashboard"
+                          "/admindashboard",
                         );
                       } else {
-                        Message.showToastDanger('Error : $value');
+                        Navigator.pushReplacementNamed(
+                          context,
+                          "/userdashboard",
+                        );
                       }
-                    });
+                    } else {
+                      Message.showToastDanger('Error : $result');
+                    }
                   },
                   child: Text(
                     'Login',

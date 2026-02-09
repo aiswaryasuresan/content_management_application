@@ -33,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 15),
               TextField(
                 controller: emailController,
+                autofocus: false,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -44,6 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 10),
               TextField(
                 controller: passwordController,
+                autofocus: false,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -72,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Message.showToast(message: "Account Created");
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          "/admindashboard",
+                          "/userdashboard",
                           (route) => false,
                         );
                       } else {
@@ -95,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Text('Already have account?'),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/login");
+                      Navigator.pushReplacementNamed(context, "/login");
                     },
                     child: Text('login'),
                   ),
